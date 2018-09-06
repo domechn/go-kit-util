@@ -1791,7 +1791,7 @@ func (g *generateCmd) generateVars() {
 			),
 		).Line()
 		g.code.Raw().Var().Id("metricsFactory").Op("=").Qual("github.com/uber/jaeger-lib/metrics/expvar", "NewFactory").Call(jen.Lit(10)).Line()
-		g.code.Raw().Var().Id("jAgentHostPort").Op("=").Lit("127.0.0.1:6381").Line()
+		g.code.Raw().Var().Id("jAgentHostPort").Op("=").Lit("127.0.0.1:6831").Line()
 		g.code.appendMultilineComment(
 			[]string{
 				"Define our flags. Your service probably won't need to bind listeners for",
