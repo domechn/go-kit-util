@@ -1760,9 +1760,6 @@ func (g *generateCmd) generateRun() (*PartialGenerator, error) {
 		jen.Id("logger2"),
 		jen.Id("jAgentHostPort"),
 	).Line()
-	pg.Raw().Id("tracer").Op("=").Qual(
-		opImport, "GlobalTracer",
-	).Call().Line()
 	pg.Raw().Id("svc").Op(":=").Qual(svcImport, "New").Call(
 		jen.Id("metricsFactory"),
 		jen.Id("logger2"),
