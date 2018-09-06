@@ -12,8 +12,8 @@ import (
 	"strings"
 
 	"github.com/sirupsen/logrus"
-	"kit-util/cmd"
-	"kit-util/utils"
+	"github.com/domgoer/go-kit-util/cmd"
+	"github.com/domgoer/go-kit-util/utils"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 )

@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	"github.com/sirupsen/logrus"
-	"kit-util/utils"
+	"github.com/domgoer/go-kit-util/utils"
 )
 
 // FileParser is the parser used by kit to parse go files.

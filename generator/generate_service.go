@@ -8,9 +8,9 @@ import (
 	"github.com/dave/jennifer/jen"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"kit-util/fs"
-	"kit-util/parser"
-	"kit-util/utils"
+	"github.com/domgoer/go-kit-util/fs"
+	"github.com/domgoer/go-kit-util/parser"
+	"github.com/domgoer/go-kit-util/utils"
 )
 
 // SupportedTransports is an array containing the supported transport types.

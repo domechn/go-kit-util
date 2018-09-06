@@ -5,8 +5,8 @@ import (
 
 	"runtime"
 
-	"kit-util/parser"
-	"kit-util/utils"
+	"github.com/domgoer/go-kit-util/parser"
+	"github.com/domgoer/go-kit-util/utils"
 	"github.com/spf13/viper"
 )
 

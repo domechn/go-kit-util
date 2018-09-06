@@ -6,8 +6,8 @@ import (
 
 	"github.com/dave/jennifer/jen"
 	"github.com/emicklei/proto"
-	"kit-util/fs"
-	"kit-util/parser"
+	"github.com/domgoer/go-kit-util/fs"
+	"github.com/domgoer/go-kit-util/parser"
 )
 
 func TestNewGenerateTransport(t *testing.T) {

@@ -8,8 +8,8 @@ import (
 
 	"strings"
 
-	"kit-util/fs"
-	"kit-util/utils"
+	"github.com/domgoer/go-kit-util/fs"
+	"github.com/domgoer/go-kit-util/utils"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 )

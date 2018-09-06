@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/dave/jennifer/jen"
-	"kit-util/fs"
-	"kit-util/utils"
+	"github.com/domgoer/go-kit-util/fs"
+	"github.com/domgoer/go-kit-util/utils"
 	"github.com/spf13/viper"
 )
 

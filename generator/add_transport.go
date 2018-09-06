@@ -18,9 +18,9 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/dave/jennifer/jen"
 	"github.com/emicklei/proto"
-	"kit-util/fs"
-	"kit-util/parser"
-	"kit-util/utils"
+	"github.com/domgoer/go-kit-util/fs"
+	"github.com/domgoer/go-kit-util/parser"
+	"github.com/domgoer/go-kit-util/utils"
 	"github.com/spf13/viper"
 	"github.com/emicklei/proto-contrib/pkg/protofmt"
 )

@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"github.com/sirupsen/logrus"
-	"kit-util/generator"
+	"github.com/domgoer/go-kit-util/generator"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
