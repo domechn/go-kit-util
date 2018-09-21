@@ -1752,9 +1752,9 @@ func (g *generateCmd) generateRun() (*PartialGenerator, error) {
 		jen.Id("zapLogger"),
 	).Line()
 	pg.Raw().Id("tracer").Op("=").Qual(pkgImport+"/tracing", "Init").Call(
-		jen.Lit("hello"),
+		jen.Lit(g.name),
 		jen.Id("metricsFactory").Dot("Namespace").Call(
-			jen.Lit("hello"),
+			jen.Lit(g.name),
 			jen.Id("nil"),
 		),
 		jen.Id("logger2"),
