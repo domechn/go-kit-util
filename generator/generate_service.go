@@ -217,9 +217,6 @@ func (g *GenerateService) generateNewMethod() {
 	fn := fmt.Sprintf("New%s", utils.ToCamelCase(g.serviceStructName))
 	body := []jen.Code{
 		jen.Var().Id("svc").Id(g.interfaceName).Op("=").Id(fn).Call(
-			jen.Id("metricsFactory"),
-			jen.Id("logger"),
-			jen.Id("jAgentHostPort"),
 		),
 		jen.For(
 			jen.List(jen.Id("_"), jen.Id("m")).Op(":=").Range().Id("middleware"),
@@ -232,9 +229,6 @@ func (g *GenerateService) generateNewMethod() {
 		"New",
 		nil,
 		[]jen.Code{
-			jen.Id("metricsFactory").Qual("github.com/uber/jaeger-lib/metrics", "Factory"),
-			jen.Id("logger").Qual(pkgImport+"/log", "Factory"),
-			jen.Id("jAgentHostPort").Id("string"),
 			jen.Id("middleware").Id("[]Middleware"),
 		},
 		[]jen.Code{},
@@ -256,23 +250,14 @@ func (g *GenerateService) generateNewBasicStructMethod() {
 		g.interfaceName,
 	).Line()
 	body := []jen.Code{
+		jen.Id("t").Op(",").Id("l").Op(":=").Qual(pkgImport+"/tracing","NewTracerAndLogger").Call(jen.Lit(g.interfaceName)),
 		jen.Return(jen.Id(fmt.Sprintf("&%s", g.serviceStructName)).Block(
-			jen.Id("tracer").Op(":").Qual(pkgImport+"/tracing", "Init").Call(
-				jen.Lit(g.serviceStructName),
-				jen.Id("metricsFactory").Dot("Namespace").Call(
-					jen.Lit(g.serviceStructName), jen.Id("nil"),
-				),
-				jen.Id("logger"),
-				jen.Id("jAgentHostPort"),
-			).Op(","),
-			jen.Id("logger").Op(":").Id("logger").Op(","),
+			jen.Id("tracer").Op(":").Id("t").Op(","),
+			jen.Id("logger").Op(":").Id("l").Op(","),
 		)),
 	}
 	//metricsFactory metrics.Factory, logger log.Factory, jAgentHostPort string
 	g.code.appendFunction(fn, nil, []jen.Code{
-		jen.Id("metricsFactory").Qual("github.com/uber/jaeger-lib/metrics", "Factory"),
-		jen.Id("logger").Qual(pkgImport+"/log", "Factory"),
-		jen.Id("jAgentHostPort").Id("string"),
 	}, []jen.Code{}, g.interfaceName, body...)
 	g.code.NewLine()
 }
@@ -1752,18 +1737,15 @@ func (g *generateCmd) generateRun() (*PartialGenerator, error) {
 		jen.Id("zapLogger"),
 	).Line()
 	pg.Raw().Id("tracer").Op("=").Qual(pkgImport+"/tracing", "Init").Call(
-		jen.Lit(g.name),
+		jen.Lit("global-server"),
 		jen.Id("metricsFactory").Dot("Namespace").Call(
-			jen.Lit(g.name),
+			jen.Lit("global-server"),
 			jen.Id("nil"),
 		),
 		jen.Id("logger2"),
 		jen.Id("jAgentHostPort"),
 	).Line()
 	pg.Raw().Id("svc").Op(":=").Qual(svcImport, "New").Call(
-		jen.Id("metricsFactory"),
-		jen.Id("logger2"),
-		jen.Id("jAgentHostPort"),
 		jen.Id("getServiceMiddleware").Call(jen.Id("logger")),
 	).Line()
 	pg.Raw().Id("eps").Op(":=").Qual(epImport, "New").Call(

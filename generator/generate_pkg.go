@@ -387,8 +387,28 @@ import (
 	"github.com/uber/jaeger-lib/metrics"
 	"go.uber.org/zap"
 
+	"github.com/uber/jaeger-lib/metrics/expvar"
+	"go.uber.org/zap/zapcore"
+
 	"%s"
 )
+
+var (
+	metricsFactory = expvar.NewFactory(10)
+	zlogger        *zap.Logger
+	jAgentHostPort = "127.0.0.1:6831"
+)
+
+func init() {
+	zlogger, _ = zap.NewDevelopment(zap.AddStacktrace(zapcore.FatalLevel))
+}
+
+func NewTracerAndLogger(serviceName string) (opentracing.Tracer, log.Factory) {
+	zapLogger := zlogger.With(zap.String("serviceName", serviceName))
+	logger := log.NewFactory(zapLogger)
+	tracer := Init(serviceName, metricsFactory.Namespace(serviceName, nil), logger, jAgentHostPort)
+	return tracer, logger
+}
 
 // Init creates a new instance of Jaeger tracer.
 func Init(serviceName string, metricsFactory metrics.Factory, logger log.Factory, backendHostPort string) opentracing.Tracer {
