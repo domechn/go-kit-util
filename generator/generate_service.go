@@ -1723,28 +1723,6 @@ func (g *generateCmd) generateRun() (*PartialGenerator, error) {
 		jen.Lit("tracer"),
 		jen.Lit("jaeger"),
 	).Line()
-	//var zapLogger = mlogger.With(zap.String("serviceName", "hello"))
-	//var logger2 = log2.NewFactory(zapLogger)
-	//tracer = tracing.Init("hello", metricsFactory.Namespace("hello", nil), logger2, "127.0.0.1:6831")
-	//pg.Raw().Id("zapLogger").Op(":=").Id("mlogger").Dot("With").Call(
-	//	jen.Qual("go.uber.org/zap", "String").Call(
-	//		jen.Lit("serviceName"),
-	//		jen.Lit(g.name),
-	//	),
-	//).Line()
-	////TODO log path
-	//pg.Raw().Id("logger2").Op(":=").Qual(pkgImport+"/log", "NewFactory").Call(
-	//	jen.Id("zapLogger"),
-	//).Line()
-	//pg.Raw().Id("tracer").Op("=").Qual(pkgImport+"/tracing", "Init").Call(
-	//	jen.Lit("global-server"),
-	//	jen.Id("metricsFactory").Dot("Namespace").Call(
-	//		jen.Lit("global-server"),
-	//		jen.Id("nil"),
-	//	),
-	//	jen.Id("logger2"),
-	//	jen.Id("jAgentHostPort"),
-	//).Line()
 	pg.Raw().Id("tracer").Op(",").Id("_").Op("=").
 		Qual(pkgImport+"/tracing","NewTracerAndLogger").
 			Call(jen.Lit("global-server")).Line()
