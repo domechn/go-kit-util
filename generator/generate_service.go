@@ -6,11 +6,11 @@ import (
 	"strings"
 
 	"github.com/dave/jennifer/jen"
-	"github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
 	"github.com/domgoer/go-kit-util/fs"
 	"github.com/domgoer/go-kit-util/parser"
 	"github.com/domgoer/go-kit-util/utils"
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 // SupportedTransports is an array containing the supported transport types.
@@ -216,8 +216,7 @@ func (g *GenerateService) generateNewMethod() {
 	).Line()
 	fn := fmt.Sprintf("New%s", utils.ToCamelCase(g.serviceStructName))
 	body := []jen.Code{
-		jen.Var().Id("svc").Id(g.interfaceName).Op("=").Id(fn).Call(
-		),
+		jen.Var().Id("svc").Id(g.interfaceName).Op("=").Id(fn).Call(),
 		jen.For(
 			jen.List(jen.Id("_"), jen.Id("m")).Op(":=").Range().Id("middleware"),
 		).Block(
@@ -250,15 +249,14 @@ func (g *GenerateService) generateNewBasicStructMethod() {
 		g.interfaceName,
 	).Line()
 	body := []jen.Code{
-		jen.Id("t").Op(",").Id("l").Op(":=").Qual(pkgImport+"/tracing","NewTracerAndLogger").Call(jen.Lit(g.interfaceName)),
+		jen.Id("t").Op(",").Id("l").Op(":=").Qual(pkgImport+"/tracing", "NewTracerAndLogger").Call(jen.Lit(g.interfaceName)),
 		jen.Return(jen.Id(fmt.Sprintf("&%s", g.serviceStructName)).Block(
 			jen.Id("tracer").Op(":").Id("t").Op(","),
 			jen.Id("logger").Op(":").Id("l").Op(","),
 		)),
 	}
 	//metricsFactory metrics.Factory, logger log.Factory, jAgentHostPort string
-	g.code.appendFunction(fn, nil, []jen.Code{
-	}, []jen.Code{}, g.interfaceName, body...)
+	g.code.appendFunction(fn, nil, []jen.Code{}, []jen.Code{}, g.interfaceName, body...)
 	g.code.NewLine()
 }
 func (g *GenerateService) serviceFound() bool {
@@ -1724,8 +1722,8 @@ func (g *generateCmd) generateRun() (*PartialGenerator, error) {
 		jen.Lit("jaeger"),
 	).Line()
 	pg.Raw().Id("tracer").Op(",").Id("_").Op("=").
-		Qual(pkgImport+"/tracing","NewTracerAndLogger").
-			Call(jen.Lit("global-server")).Line()
+		Qual(pkgImport+"/tracing", "NewTracerAndLogger").
+		Call(jen.Lit("global-server")).Line()
 	pg.Raw().Id("svc").Op(":=").Qual(svcImport, "New").Call(
 		jen.Id("getServiceMiddleware").Call(jen.Id("logger")),
 	).Line()
@@ -2149,7 +2147,10 @@ func (g *generateCmd) generateCmdMain() error {
 func changePkgAndImp(before string) string {
 	bs := strings.Split(before, "\n")
 	for i, b := range bs {
-		if strings.Contains(b, "type") {
+		if strings.Contains(b, "type ") ||
+			strings.Contains(b, "var ") ||
+			strings.Contains(b, "const ") ||
+			strings.Contains(b, "func ") {
 			return strings.Join(bs[i:], "\n")
 		}
 	}
