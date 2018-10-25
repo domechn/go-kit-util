@@ -1,5 +1,7 @@
 # go-kit-util
 
+代码引用：https://github.com/kujtimiihoxha/kit
+
 - 只需要修改接口文件即可生成整个项目
 - 生成项目集成了jaeger分布式追踪
 
